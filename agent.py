@@ -12,6 +12,7 @@ from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.core.agent import FunctionCallingAgent, AgentRunner, FunctionCallingAgentWorker
 from llama_parse import LlamaParse
 from llama_index.core.objects import ObjectIndex
+from base_1 import GradioAgentChatPack
 
 
 
@@ -142,7 +143,10 @@ class ACRAgent():
         return str(self.top_agent.query(input))
 
 if __name__ == '__main__':
-    agent = ACRAgent()
-    print('Ask this agent about the appropriateness of IR planning and follow up.')
-    while True:
-        print(agent.chat(input('Input: ')))
+    agent = ACRAgent(llama_parse_api_key='llx-YHDQbGSWpgHYl1nlnNBp588THUnaE4ryaTgc4mUqaZEF9R5u')
+    grAg = GradioAgentChatPack(agent=agent)
+    grAg.run()
+    # agent = ACRAgent()
+    # print('Ask this agent about the appropriateness of IR planning and follow up.')
+    # while True:
+    #     print(agent.chat(input('Input: ')))
