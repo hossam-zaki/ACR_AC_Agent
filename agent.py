@@ -15,14 +15,13 @@ from llama_index.core.objects import ObjectIndex
 from base_1 import GradioAgentChatPack
 
 
-
 class ACRAgent():
     def __init__(self,
                  llama_parse_api_key=None,
                  file_descriptions_path='file_descriptions.json',
                  llm="llama3.3",
                  embed_model="BAAI/bge-base-en-v1.5"):
-        
+
         # ollama
         self.llm = Ollama(model=llm, request_timeout=360.0, temperature=0)
 
@@ -142,9 +141,12 @@ class ACRAgent():
     def query(self, input):
         return str(self.top_agent.query(input))
 
+    def get_agent(self):
+        return self.top_agent
+
 if __name__ == '__main__':
     agent = ACRAgent(llama_parse_api_key='llx-YHDQbGSWpgHYl1nlnNBp588THUnaE4ryaTgc4mUqaZEF9R5u')
-    grAg = GradioAgentChatPack(agent=agent)
+    grAg = GradioAgentChatPack(agent=agent.get_agent())
     grAg.run()
     # agent = ACRAgent()
     # print('Ask this agent about the appropriateness of IR planning and follow up.')
