@@ -81,8 +81,8 @@ class GradioAgentChatPack(BaseLlamaPack):
 
         gr.close_all()
         llama_theme = gr.themes.Soft(
-            primary_hue=colors.purple,
-            secondary_hue=colors.pink,
+            primary_hue=colors.blue,
+            secondary_hue=colors.teal,
             neutral_hue=colors.gray,
             spacing_size=sizes.spacing_md,
             radius_size=sizes.radius_md,
@@ -99,43 +99,38 @@ class GradioAgentChatPack(BaseLlamaPack):
             ),
         )
         llama_theme.set(
-            body_background_fill="#FFFFFF",
-            body_background_fill_dark="#000000",
-            button_primary_background_fill="linear-gradient(90deg, *primary_300, *secondary_400)",
-            button_primary_background_fill_hover="linear-gradient(90deg, *primary_200, *secondary_300)",
+            body_background_fill="#F0F4F8",
+            body_background_fill_dark="#1E1E1E",
+            button_primary_background_fill="linear-gradient(90deg, *primary_400, *secondary_500)",
+            button_primary_background_fill_hover="linear-gradient(90deg, *primary_300, *secondary_400)",
             button_primary_text_color="white",
-            button_primary_background_fill_dark="linear-gradient(90deg, *primary_600, *secondary_800)",
-            slider_color="*secondary_300",
-            slider_color_dark="*secondary_600",
-            block_title_text_weight="600",
-            block_border_width="3px",
-            block_shadow="*shadow_drop_lg",
-            #button_shadow="*shadow_drop_lg",
-            button_large_padding="32px",
+            button_primary_background_fill_dark="linear-gradient(90deg, *primary_700, *secondary_900)",
+            slider_color="*secondary_400",
+            slider_color_dark="*secondary_700",
+            block_title_text_weight="700",
+            block_border_width="2px",
+            block_shadow="*shadow_drop_md",
+            button_large_padding="16px",
         )
 
         demo = gr.Blocks(
-            theme=llama_theme,
-            css="#box { height: 420px; overflow-y: scroll !important} #logo { align-self: right }",
+            theme=gr.themes.Soft(),
+            css="#box { height: 420px; overflow-y: auto; background-color: #FFFFFF; padding: 10px; border-radius: 8px; } #logo { align-self: center; }",
         )
         with demo:
             with gr.Row():
                 gr.Markdown(
-                    "# Gradio Chat With Your Agent Powered by LlamaIndex and LlamaHub 🦙\n"
-                    "This Gradio app allows you to chat with your own agent (`BaseAgent`).\n"
-                )
-                gr.Markdown(
-                    "[![Alt text](https://d3ddy8balm3goa.cloudfront.net/other/llama-index-light-transparent-sm-font.svg)](https://llamaindex.ai)",
-                    elem_id="logo",
+                    "<h1 style='text-align:center; font-size:2.5em;'>Interventional Radiology Appropriateness Criteria</h1>",
+                    elem_id="header",
                 )
             with gr.Row():
                 chat_window = gr.Chatbot(
                     label="Message History",
                     scale=3,
+                    elem_id="chat_window",
                 )
-                console = gr.HTML(elem_id="box")
             with gr.Row():
-                message = gr.Textbox(label="Write A Message", scale=4)
+                message = gr.Textbox(label="Write A Message", scale=4, elem_id="input_box", placeholder="Type your message here...")
                 clear = gr.ClearButton()
 
             message.submit(
@@ -146,10 +141,8 @@ class GradioAgentChatPack(BaseLlamaPack):
             ).then(
                 self._generate_response,
                 chat_window,
-                [chat_window, console],
+                [chat_window],
             )
-            clear.click(self._reset_chat, None, [message, chat_window, console])
+            clear.click(self._reset_chat, None, [message, chat_window])
 
         demo.launch(server_name="0.0.0.0", server_port=8080)
-
-
